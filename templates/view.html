@@ -7,17 +7,23 @@
     </head>
     <body>
         <div class=Jumbotron>
-        <h1>Some to Do...</h1>
+        <h1>From Ocean To Cloud...</h1>
         <form method=post action="">
             <table>
                   {% for t in final %}
                     <tr>
-                    <td class=field_name>{{ ' '.join(t[0].name.split('_')).title() }}</td>
-                    <td>{{ t[0] }}</td>
-                    <td class=spacing>{{ t[0].label }}</td>
-                    <td class=field_name>{{ ' '.join(t[1].name.split('_')).title() }}</td>
-                    <td>{{ t[1] }}</td>
-                    <td class=spacing>{{ t[1].label }}</td>
+                    {% if t |length  == 2 %} 
+                        <td class=field_name>{{ ' '.join(t[0].name.split('_')).title() }}</td>
+                        <td>{{ t[0] }}</td>
+                        <td class=spacing>{{ t[0].label }}</td>
+                        <td class=field_name>{{ ' '.join(t[1].name.split('_')).title() }}</td>
+                        <td>{{ t[1] }}</td>
+                        <td class=spacing>{{ t[1].label }}</td>    
+                    {% else %}
+                        <td class=field_name>{{ ' '.join(t[0].name.split('_')).title() }}</td>
+                        <td>{{ t[0] }}</td>
+                        <td class=spacing>{{ t[0].label }}</td>
+                    {% endif %}
                     </tr>
                   {% endfor %}
             </table>

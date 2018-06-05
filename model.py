@@ -1,4 +1,4 @@
-from wtforms import Form, FloatField, validators
+from wtforms import Form, FloatField, SelectField, BooleanField, validators
 
 class InputForm(Form):
     total_length = FloatField(label='(m)',
@@ -9,3 +9,5 @@ class InputForm(Form):
                     validators=[validators.InputRequired()])
     default_spacing = FloatField(label='(m)',
                     validators=[validators.InputRequired()])
+    checked = SelectField(label='', choices=[('yes', 'YES'), ('no', 'NO')])
+    language = SelectField(label='', choices=[('cpp', 'C++'), ('py', 'Python'), ('text', 'Plain Text')])
