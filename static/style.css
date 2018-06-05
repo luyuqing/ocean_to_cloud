@@ -1,0 +1,18 @@
+body            { margin: 2em 2em 2em 2em; }
+
+h1              { font-family: serif;
+                  border-bottom: 3px solid rgb(245, 27, 27); }
+
+table           { margin-top: 2em; }
+
+p               { margin-top: 2em; }
+
+td              { padding-right: 5px; 
+                  padding-bottom: 10px; }
+
+.field_name     { padding-right: 2em; }
+
+.spacing        { padding-right: 250px; }
+
+
+

@@ -1,0 +1,28 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link rel="stylesheet" type="text/css" href="static/style.css">
+        <title>Hello World</title>
+    </head>
+    <body>
+        <div class=Jumbotron>
+        <h1>Some to Do...</h1>
+        <form method=post action="">
+            <table>
+                  {% for t in final %}
+                    <tr>
+                    <td class=field_name>{{ ' '.join(t[0].name.split('_')).title() }}</td>
+                    <td>{{ t[0] }}</td>
+                    <td class=spacing>{{ t[0].label }}</td>
+                    <td class=field_name>{{ ' '.join(t[1].name.split('_')).title() }}</td>
+                    <td>{{ t[1] }}</td>
+                    <td class=spacing>{{ t[1].label }}</td>
+                    </tr>
+                  {% endfor %}
+            </table>
+            <p><input type=submit value=Compute class="btn btn-primary"></form></p>
+            <h3>{{ result }}</h3>
+        </div>
+    </body>
+</html>
