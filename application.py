@@ -38,6 +38,51 @@ def index():
     safety_fields = zip_form(safety)
 
     cal_with_fields = CalWith(request.form)
+
+    if request.method == 'POST':
+        if geo.validate() and material.validate() and \
+           load.validate() and safety.validate():
+            steel_diameter_data = geo.steel_diameter_data.data
+            steel_diameter_unit = geo.steel_diameter_unit.data
+            if steel_diameter_unit == 'inch':
+                steel_diameter = steel_diameter_data * 25.4
+            else:
+                steel_diameter = steel_diameter_data
+            corrosion_allowance = geo.corrosion_allowance.data
+
+            fabrication_method = material.fabrication_method.data
+            pipe_material = material.pipe_material.data
+            max_design_temperature = material.max_design_temperature.data
+            supplimentary_d_fulfilled = material.supplimentary_d_fulfilled.data
+            supplimentary_u_fulfilled = material.supplimentary_u_fulfilled.data
+            any_inner_metal_layer = material.any_inner_metal_layer.data
+            cladded_or_lined = material.cladded_or_lined.data
+            metal_layer_type = material.metal_layer_type.data
+
+            design_pressure = load.design_pressure.data
+            level = load.level.data
+            max_contents_density_at_operation = load.max_contents_density_at_operation.data
+            water_depth_for_bursting = load.water_depth_for_bursting.data
+            water_depth_for_collapse_and_prop_buckling = load.water_depth_for_collapse_and_prop_buckling.data
+            sea_water_density = load.sea_water_density.data
+
+            contents_type = safety.contents_type.data
+            operation_zone = safety.operation_zone.data
+
+            pressure_containment = cal_with_fields.pressure_containment.data
+            collaps = cal_with_fields.collaps.data
+            propgation_buckling = cal_with_fields.propgation_buckling.data
+            reeling_screening_check = cal_with_fields.reeling_screening_check.data
+            vessel_if_reeling_check_is_requried = cal_with_fields.vessel_if_reeling_check_is_requried.data
+
+            print(contents_type, vessel_if_reeling_check_is_requried)
+        
+        else:
+            print('Please fill in all blank spaces with valid values')
+    
+    
+
+
     
     
     

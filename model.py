@@ -20,7 +20,7 @@ class MaterialInput(Form):
                                                    ('DNV450', 'DNV450'),
                                                    ('22Cr', '22Cr'),
                                                    ('25Cr', '25Cr')])
-    max_design_temperature = FloatField(label='(oC)',
+    max_design_temperature = FloatField(label='(°C)',
                                         validators=[validators.InputRequired()])
     supplimentary_d_fulfilled = SelectField(label='', choices=[('yes', 'YES'),
                                                                ('no', 'NO')])
@@ -59,7 +59,7 @@ class SafetyClass(Form):
 
 class CalWith(Form):
     pressure_containment = BooleanField(label='', validators=[validators.DataRequired()])
-    collpase = BooleanField(label='', validators=[validators.DataRequired()])
+    collaps = BooleanField(label='', validators=[validators.DataRequired()])
     propgation_buckling = BooleanField(label='', validators=[validators.DataRequired()])
     reeling_screening_check = BooleanField(label='', validators=[validators.DataRequired()])
     vessel_if_reeling_check_is_requried = SelectField(label='', choices=[('7Oceans', '7Oceans'),
