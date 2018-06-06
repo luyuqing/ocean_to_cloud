@@ -3,30 +3,106 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         <link rel="stylesheet" type="text/css" href="static/style.css">
-        <title>Hello World</title>
+        <title>Wall Thickness Calculation</title>
     </head>
     <body>
         <div class=Jumbotron>
-        <h1>From Ocean To Cloud...</h1>
+        <h1>Wall Thickness Calculation</h1>
         <form method=post action="">
+            <h2>Geometry Input</h2>
+            <div class=form>
             <table>
-                  {% for t in final %}
-                    <tr>
-                    {% if t |length  == 2 %} 
-                        <td class=field_name>{{ ' '.join(t[0].name.split('_')).title() }}</td>
-                        <td>{{ t[0] }}</td>
-                        <td class=spacing>{{ t[0].label }}</td>
-                        <td class=field_name>{{ ' '.join(t[1].name.split('_')).title() }}</td>
-                        <td>{{ t[1] }}</td>
-                        <td class=spacing>{{ t[1].label }}</td>    
-                    {% else %}
-                        <td class=field_name>{{ ' '.join(t[0].name.split('_')).title() }}</td>
-                        <td>{{ t[0] }}</td>
-                        <td class=spacing>{{ t[0].label }}</td>
-                    {% endif %}
-                    </tr>
-                  {% endfor %}
+                  <tr>
+                      <td>{{ convert_name(geo_diameter_name) }}</td>
+                      <td>{{ geo_diameter_field }}</td>
+                      <td>{{ geo_diameter_unit }}</td>
+                      <td class=geo_space>{{ convert_name(geo_corrosion_name) }}</td>
+                      <td>{{ geo_corrosion_field }}</td>
+                      <td>{{ geo_corrosion_label }}</td>
+                  </tr>
             </table>
+            </div>
+            <h2>Material Input</h2>
+            <div class=form>
+            <table>
+                {% for tuple_f in material_fields %}
+                    {% if tuple_f | length == 2 %}
+                        <tr>
+                            <td>{{ convert_name(tuple_f[0].name) }}</td>
+                            <td>{{ tuple_f[0] }}</td>
+                            <td>{{ tuple_f[0].label }}</td>
+                            <td class=material_space>{{ convert_name(tuple_f[1].name) }}</td>
+                            <td>{{ tuple_f[1] }}</td>
+                            <td>{{ tuple_f[1].label }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ convert_name(tuple_f[0].name) }}</td>
+                            <td>{{ tuple_f[0] }}</td>
+                            <td>{{ tuple_f[0].label }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+            </div>
+            <h2>Load Input</h2>
+            <div class=form>
+            <table>
+                    {% for tuple_f in load_fields %}
+                        {% if tuple_f | length == 2 %}
+                            <tr>
+                                <td>{{ convert_name(tuple_f[0].name) }}</td>
+                                <td>{{ tuple_f[0] }}</td>
+                                <td>{{ tuple_f[0].label }}</td>
+                                <td class=load_space>{{ convert_name(tuple_f[1].name) }}</td>
+                                <td>{{ tuple_f[1] }}</td>
+                                <td>{{ tuple_f[1].label }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>{{ convert_name(tuple_f[0].name) }}</td>
+                                <td>{{ tuple_f[0] }}</td>
+                                <td>{{ tuple_f[0].label }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+                </div>  
+                <h2>Safety Class</h2>
+                <div class=form>
+                <table>
+                    {% for tuple_f in safety_fields %}
+                        {% if tuple_f | length == 2 %}
+                            <tr>
+                                <td>{{ convert_name(tuple_f[0].name) }}</td>
+                                <td>{{ tuple_f[0] }}</td>
+                                <td>{{ tuple_f[0].label }}</td>
+                                <td class=safety_space>{{ convert_name(tuple_f[1].name) }}</td>
+                                <td>{{ tuple_f[1] }}</td>
+                                <td>{{ tuple_f[1].label }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>{{ convert_name(tuple_f[0].name) }}</td>
+                                <td>{{ tuple_f[0] }}</td>
+                                <td>{{ tuple_f[0].label }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+                </div>
+                <h2>Calculate With Following</h2>
+                <div class=form>
+                <table>
+                    {% for field in cal_with_fields %}
+                        <tr>
+                            <td>{{ convert_name(field.name) }}</td>
+                            <td>{{ field }}</td>
+                            <td>{{ field.label }}</td>
+                        </tr>
+                    {% endfor %}
+                </table>
+                </div>
             <p><input type=submit value=Compute class="btn btn-primary"></form></p>
             <h3>{{ result }}</h3>
         </div>
