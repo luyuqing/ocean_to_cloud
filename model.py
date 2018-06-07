@@ -18,8 +18,8 @@ class MaterialInput(Form):
     pipe_material = SelectField(label='', choices=[('DNV360', 'DNV360'),
                                                    ('DNV415', 'DNV415'),
                                                    ('DNV450', 'DNV450'),
-                                                   ('22Cr', '22Cr'),
-                                                   ('25Cr', '25Cr')])
+                                                   ('DNV22Cr', 'DNV22Cr'),
+                                                   ('DNV25Cr', 'DNV25Cr')])
     max_design_temperature = FloatField(label='(°C)',
                                         validators=[validators.InputRequired()])
     supplimentary_d_fulfilled = SelectField(label='', choices=[('yes', 'YES'),
@@ -39,7 +39,7 @@ class LoadInput(Form):
                                  validators=[validators.InputRequired()])
     level = FloatField(label='(m)',
                        validators=[validators.InputRequired()])
-    max_contents_density_at_operation = FloatField(label='(kg/m3)',
+    max_contents_density = FloatField(label='(kg/m3)',
                                                    validators=[validators.InputRequired()])
     water_depth_for_bursting = FloatField(label='(m)',
                                           validators=[validators.InputRequired()])

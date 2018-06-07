@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, jsonify
 
 from prepare import zip_form
-from compute import compute
 from model import GeometryInput, MaterialInput, \
                   LoadInput, SafetyClass, CalWith
+from compute import cal_pressure_containment
 
 
 application = Flask(__name__)
@@ -61,7 +61,7 @@ def index():
 
             design_pressure = load.design_pressure.data
             level = load.level.data
-            max_contents_density_at_operation = load.max_contents_density_at_operation.data
+            max_contents_density = load.max_contents_density.data
             water_depth_for_bursting = load.water_depth_for_bursting.data
             water_depth_for_collapse_and_prop_buckling = load.water_depth_for_collapse_and_prop_buckling.data
             sea_water_density = load.sea_water_density.data
@@ -74,8 +74,23 @@ def index():
             propgation_buckling = cal_with_fields.propgation_buckling.data
             reeling_screening_check = cal_with_fields.reeling_screening_check.data
             vessel_if_reeling_check_is_requried = cal_with_fields.vessel_if_reeling_check_is_requried.data
+            
+            res = cal_pressure_containment( steel_diameter,
+                                            corrosion_allowance,
+                                            fabrication_method,
+                                            pipe_material,
+                                            max_design_temperature,
+                                            supplimentary_d_fulfilled,
+                                            supplimentary_u_fulfilled,
+                                            design_pressure,
+                                            level,
+                                            max_contents_density,
+                                            sea_water_density,
+                                            water_depth_for_bursting,
+                                            contents_type,
+                                            operation_zone)
 
-            return jsonify({"result": (str(steel_diameter) + '\n' + str(collaps))})
+            return jsonify({"result": str(res)})
         else:
             return jsonify({"result": "Please Fill In Blanks With Valid Values."})
 
