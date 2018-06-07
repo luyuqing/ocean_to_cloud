@@ -5,8 +5,8 @@ class GeometryInput(Form):
     steel_diameter_data = FloatField(label='',
                                      validators=[validators.InputRequired()])
     steel_diameter_unit = SelectField(label='',
-                                      choices=[('inch', '[inch]'),
-                                               ('mm', '[mm]')])
+                                      choices=[('mm', '[mm]'),
+                                               ('inch', '[inch]')])
     corrosion_allowance = FloatField(label='(mm)',
                                      validators=[validators.InputRequired()])
 
@@ -58,9 +58,9 @@ class SafetyClass(Form):
 
 
 class CalWith(Form):
-    pressure_containment = BooleanField(label='', validators=[validators.DataRequired()])
-    collaps = BooleanField(label='', validators=[validators.DataRequired()])
-    propgation_buckling = BooleanField(label='', validators=[validators.DataRequired()])
-    reeling_screening_check = BooleanField(label='', validators=[validators.DataRequired()])
+    pressure_containment = BooleanField(label='')
+    collaps = BooleanField(label='')
+    propgation_buckling = BooleanField(label='')
+    reeling_screening_check = BooleanField(label='')
     vessel_if_reeling_check_is_requried = SelectField(label='', choices=[('7Oceans', '7Oceans'),
                                                                          ('7Navica', '7Navica')])

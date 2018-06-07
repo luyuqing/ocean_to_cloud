@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 from prepare import zip_form
 from compute import compute
@@ -30,7 +30,7 @@ def index():
 
     material = MaterialInput(request.form)
     material_fields = zip_form(material)
-    
+
     load = LoadInput(request.form)
     load_fields = zip_form(load)
 
@@ -75,18 +75,10 @@ def index():
             reeling_screening_check = cal_with_fields.reeling_screening_check.data
             vessel_if_reeling_check_is_requried = cal_with_fields.vessel_if_reeling_check_is_requried.data
 
-            print(contents_type, vessel_if_reeling_check_is_requried)
-        
+            return jsonify({"result": (str(steel_diameter) + '\n' + str(collaps))})
         else:
-            print('Please fill in all blank spaces with valid values')
-    
-    
+            return jsonify({"result": "Please Fill In Blanks With Valid Values."})
 
-
-    
-    
-    
-    
     return render_template("view.html",
                            geo_diameter_name=geo_diameter_name,
                            geo_diameter_field=geo_diameter_field,
@@ -99,22 +91,6 @@ def index():
                            safety_fields=safety_fields,
                            cal_with_fields=cal_with_fields)
 
-
-
-
-    # final = zip_form(form)
-    # result = ''
-    # if request.method == 'POST' and form.validate():
-    #     total_length = form.total_length.data
-    #     single_length = form.single_length.data
-    #     welding_coverage = form.welding_coverage.data
-    #     default_spacing = form.default_spacing.data
-    #     c = form.checked.data
-    #     print(c)
-
-    #     result = compute(total_length, single_length, welding_coverage, default_spacing)
-
-    # return render_template("view.html", final=final, result=result)
 
 if __name__ == '__main__':
     application.run(debug=True)

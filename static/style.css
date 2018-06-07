@@ -1,8 +1,10 @@
-body            { margin: 2em; }
+body            { font-family: serif;
+                  margin: 2em; }
 
 h1              { font-size: 3.5em;
                   font-family: serif;
-                  border-bottom: 3px solid rgb(245, 27, 27); }
+                  border-bottom: 3px solid rgb(245, 27, 27); 
+                  word-spacing: 15px; }
 
 h2              { margin-top: 2em; 
                   margin-left: 6px; 
@@ -11,7 +13,8 @@ h2              { margin-top: 2em;
 p               { margin-top: 3.5em; 
                   margin-left: 5px; }
 
-td              { padding-right: 5px; 
+td              { font-size: 1.05em;
+                  padding-right: 5px; 
                   padding-bottom: 10px; }
 
 .form           { background-color: rgb(253, 233, 209);
@@ -24,9 +27,14 @@ td              { padding-right: 5px;
 
 .material_space { padding-left: 15em; }
 
-.load_space     { padding-left: 4.5em; }
+.load_space     { padding-left: 5em; }
 
 .safety_space   { padding-left: 24em; }
+
+h4              { margin-top: 1.5em;}
+
+.result         { margin-left: 6px;
+                  line-height: 1.5; }
 
 
 
