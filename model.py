@@ -2,11 +2,8 @@ from wtforms import Form, FloatField, SelectField, BooleanField, validators
 
 
 class GeometryInput(Form):
-    steel_diameter_data = FloatField(label='',
+    steel_diameter = FloatField(label='mm',
                                      validators=[validators.InputRequired()])
-    steel_diameter_unit = SelectField(label='',
-                                      choices=[('mm', '[mm]'),
-                                               ('inch', '[inch]')])
     corrosion_allowance = FloatField(label='(mm)',
                                      validators=[validators.InputRequired()])
 
@@ -57,10 +54,20 @@ class SafetyClass(Form):
                                                     ('Both', 'Both')])
 
 
+class Other(Form):
+    example_param_float = FloatField(label='(m)',
+                                     validators=[validators.InputRequired()])
+    example_param_select = SelectField(label='', choices=[('Choice1', 'Choice1'),
+                                                          ('Choice2', 'Choice2'),
+                                                          ('Choice3', 'Choice3')])
+
+
 class CalWith(Form):
     pressure_containment = BooleanField(label='')
     collaps = BooleanField(label='')
     propgation_buckling = BooleanField(label='')
     reeling_screening_check = BooleanField(label='')
     vessel = SelectField(label='', choices=[('7Oceans', '7Oceans'),
-                                                                         ('7Navica', '7Navica')])
+                                            ('7Navica', '7Navica')])
+
+

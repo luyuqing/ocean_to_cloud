@@ -14,14 +14,24 @@
             <h2>Geometry Input</h2>
             <div class=form>
             <table>
-                  <tr>
-                      <td>{{ convert_name(geo_diameter_name) }}</td>
-                      <td>{{ geo_diameter_field }}</td>
-                      <td>{{ geo_diameter_unit }}</td>
-                      <td class=geo_space>{{ convert_name(geo_corrosion_name) }}</td>
-                      <td>{{ geo_corrosion_field }}</td>
-                      <td>{{ geo_corrosion_label }}</td>
-                  </tr>
+                {% for tuple_f in geo_fields %}
+                {% if tuple_f | length == 2 %}
+                    <tr>
+                        <td>{{ convert_name(tuple_f[0].name) }}</td>
+                        <td>{{ tuple_f[0] }}</td>
+                        <td>{{ tuple_f[0].label }}</td>
+                        <td class=geo_space>{{ convert_name(tuple_f[1].name) }}</td>
+                        <td>{{ tuple_f[1] }}</td>
+                        <td>{{ tuple_f[1].label }}</td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>{{ convert_name(tuple_f[0].name) }}</td>
+                        <td>{{ tuple_f[0] }}</td>
+                        <td>{{ tuple_f[0].label }}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
             </table>
             </div>
             <h2>Material Input</h2>
@@ -80,6 +90,29 @@
                                 <td>{{ tuple_f[0] }}</td>
                                 <td>{{ tuple_f[0].label }}</td>
                                 <td class=safety_space>{{ convert_name(tuple_f[1].name) }}</td>
+                                <td>{{ tuple_f[1] }}</td>
+                                <td>{{ tuple_f[1].label }}</td>
+                            </tr>
+                        {% else %}
+                            <tr>
+                                <td>{{ convert_name(tuple_f[0].name) }}</td>
+                                <td>{{ tuple_f[0] }}</td>
+                                <td>{{ tuple_f[0].label }}</td>
+                            </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+                </div>
+                <h2>Other Input</h2>
+                <div class=form>
+                <table>
+                    {% for tuple_f in other_fields %}
+                        {% if tuple_f | length == 2 %}
+                            <tr>
+                                <td>{{ convert_name(tuple_f[0].name) }}</td>
+                                <td>{{ tuple_f[0] }}</td>
+                                <td>{{ tuple_f[0].label }}</td>
+                                <td class=other_space>{{ convert_name(tuple_f[1].name) }}</td>
                                 <td>{{ tuple_f[1] }}</td>
                                 <td>{{ tuple_f[1].label }}</td>
                             </tr>

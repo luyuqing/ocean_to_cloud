@@ -1,3 +1,5 @@
+from scipy.optimize import fsolve
+
 def cal_reeling(steel_diameter,
                 fabrication_method,
                 vessel,
@@ -37,8 +39,6 @@ def cal_reeling(steel_diameter,
 
     design_comp_strain= max_nominal_reeling_strain*load_effect_factor*condition_effect_factor
 
-    from scipy.optimize import fsolve
-
     x0 = steel_diameter/20
 
     def f_reeling(t): 
@@ -66,13 +66,13 @@ def cal_reeling(steel_diameter,
     return(min_wt_reeling_no_clad)
 
 
-print(cal_reeling(steel_diameter=273.1,
-                  fabrication_method='HFW',
-                  vessel='7Oceans',
-                  any_inner_metal_layer='no',
-                  cladded_or_lined='Cladded',
-                  clad_layer_thickness=3.0,
-                  resistance_strain_factor=2.0, #Low for installation, Table 7-5 of OS-F101
-                  material_factor=1.15,
-                  load_effect_factor=1.2, # Table 4-4 of OS-F101
-                  ext_coating_thickness=0))
+# print(cal_reeling(steel_diameter=273.1,
+#                   fabrication_method='HFW',
+#                   vessel='7Oceans',
+#                   any_inner_metal_layer='no',
+#                   cladded_or_lined='Cladded',
+#                   clad_layer_thickness=3.0,
+#                   resistance_strain_factor=2.0, #Low for installation, Table 7-5 of OS-F101
+#                   material_factor=1.15,
+#                   load_effect_factor=1.2, # Table 4-4 of OS-F101
+#                   ext_coating_thickness=0))

@@ -23,13 +23,15 @@ td              { font-size: 1.05em;
                   padding: 5px; 
                   padding-top: 10px; }
 
-.geo_space      { padding-left: 15em; }
+.geo_space      { padding-left: 19.5em; }
 
 .material_space { padding-left: 15em; }
 
 .load_space     { padding-left: 5em; }
 
 .safety_space   { padding-left: 24em; }
+
+.other_space    { padding-left: 17em; }
 
 h4              { margin-top: 1.5em;}
 
