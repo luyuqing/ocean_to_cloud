@@ -62,5 +62,5 @@ class CalWith(Form):
     collaps = BooleanField(label='')
     propgation_buckling = BooleanField(label='')
     reeling_screening_check = BooleanField(label='')
-    vessel_if_reeling_check_is_requried = SelectField(label='', choices=[('7Oceans', '7Oceans'),
+    vessel = SelectField(label='', choices=[('7Oceans', '7Oceans'),
                                                                          ('7Navica', '7Navica')])

@@ -1,9 +1,11 @@
+from collections import OrderedDict
 from flask import Flask, render_template, request, jsonify
 
 from prepare import zip_form
 from model import GeometryInput, MaterialInput, \
                   LoadInput, SafetyClass, CalWith
-from compute import cal_pressure_containment
+from compute import cal_pressure_containment, cal_collaps, \
+                    cal_prop_buckling, cal_reeling
 
 
 application = Flask(__name__)
@@ -73,24 +75,81 @@ def index():
             collaps = cal_with_fields.collaps.data
             propgation_buckling = cal_with_fields.propgation_buckling.data
             reeling_screening_check = cal_with_fields.reeling_screening_check.data
-            vessel_if_reeling_check_is_requried = cal_with_fields.vessel_if_reeling_check_is_requried.data
-            
-            res = cal_pressure_containment( steel_diameter,
-                                            corrosion_allowance,
-                                            fabrication_method,
-                                            pipe_material,
-                                            max_design_temperature,
-                                            supplimentary_d_fulfilled,
-                                            supplimentary_u_fulfilled,
-                                            design_pressure,
-                                            level,
-                                            max_contents_density,
-                                            sea_water_density,
-                                            water_depth_for_bursting,
-                                            contents_type,
-                                            operation_zone)
+            vessel = cal_with_fields.vessel.data
 
-            return jsonify({"result": str(res)})
+            res = OrderedDict()
+            p1, p2, p3, p4 = 0, 0, 0, 0
+            if pressure_containment is True:
+                p1 = cal_pressure_containment(steel_diameter,
+                                              corrosion_allowance,
+                                              fabrication_method,
+                                              pipe_material,
+                                              max_design_temperature,
+                                              supplimentary_d_fulfilled,
+                                              supplimentary_u_fulfilled,
+                                              design_pressure,
+                                              level,
+                                              max_contents_density,
+                                              sea_water_density,
+                                              water_depth_for_bursting,
+                                              contents_type,
+                                              operation_zone)
+            if collaps is True:
+                p2 = cal_collaps(steel_diameter,
+                                 corrosion_allowance,
+                                 fabrication_method,
+                                 pipe_material,
+                                 max_design_temperature,
+                                 supplimentary_d_fulfilled,
+                                 supplimentary_u_fulfilled,
+                                 sea_water_density,
+                                 water_depth_for_collapse_and_prop_buckling,
+                                 contents_type,
+                                 operation_zone)
+            if propgation_buckling is True:
+                p3 = cal_prop_buckling(steel_diameter,
+                                       corrosion_allowance,
+                                       fabrication_method,
+                                       pipe_material,
+                                       max_design_temperature,
+                                       supplimentary_d_fulfilled,
+                                       supplimentary_u_fulfilled,
+                                       sea_water_density,
+                                       water_depth_for_collapse_and_prop_buckling,
+                                       contents_type,
+                                       operation_zone)
+            if reeling_screening_check is True:
+                p4 = cal_reeling(steel_diameter,
+                                 fabrication_method,
+                                 vessel,
+                                 any_inner_metal_layer,
+                                 cladded_or_lined)
+            # print(p1, p2, p3, p4)
+            res['p0'] = ''
+            res['p1'] = p1 if p1 else ''
+            res['p2'] = p2 if p2 else ''
+            res['p3'] = p3 if p3 else ''
+            res['p4'] = p4 if p4 else ''
+
+            # to cal max wt, all p1-p4 must be float not string
+            wt_cal = True
+            for k, v in res.items():
+                if not isinstance(v, float) and not k == 'p0':
+                    wt_cal = False
+                    break
+            if wt_cal is True:
+                max_ = max(p1, p2, p3, p4)
+                res['p0'] = round(max_, 2)
+                print(max_)
+
+            # print(res)
+            return jsonify({"result": "Min Requirement For Wall Thickness: ...{0}\n\
+                                       Min Requirement For Pressure Containment: ...{1}\n\
+                                       Min Requirement For Collaps: ...{2}\n\
+                                       Min Requirement For Propgation Buckling: ...{3}\n\
+                                       Min Requirement For Reeling Screening Check: ...{4}\n\
+                                       ".format(res['p0'], res['p1'], res['p2'], res['p3'], res['p4'])})
+
         else:
             return jsonify({"result": "Please Fill In Blanks With Valid Values."})
 

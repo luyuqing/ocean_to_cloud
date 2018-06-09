@@ -1,103 +1,78 @@
-import openpyxl
-import os
+def cal_reeling(steel_diameter,
+                fabrication_method,
+                vessel,
+                any_inner_metal_layer,
+                cladded_or_lined,
+                clad_layer_thickness=3.0,
+                resistance_strain_factor=2.0, #Low for installation, Table 7-5 of OS-F101
+                material_factor=1.15,
+                load_effect_factor=1.2, # Table 4-4 of OS-F101
+                ext_coating_thickness=0):
 
-os.chdir(r'C:\Users\ss7n0564\Documents\My Work\A Pipeline Study and Tender Tool\Python\WT_Cals')
-
-wb = openpyxl.load_workbook('Inputs.xlsx',data_only = True)
-
-sheet = wb['WT_Cals_Inputs']
-
-
-# Read the inputs sheets and assign them to the variables
-
-#Geometry Inputs
-Steel_Pipe_Diameter_Type = sheet['C2'].value
-Steel_Pipe_Diameter = sheet['C3'].value
-
-#Material Inputs
-Fabrication_Method = sheet['F2'].value
-Pipe_Material = sheet['F3'].value
-
-#Vessel Information
-Vessel = sheet['B15'].value
-
-#Lined/clad Layer Inputs
-Any_Inner_Metal_Layer = sheet['F8'].value
-Cladded_Or_Lined = sheet['F9'].value
-Metal_Layer_Type = sheet['F10'].value
-
-if sheet['F38'].value == None:
-    if Fabrication_Method == 'HFW':
-        Max_YT_Ratio = 0.95
-    elif Fabrication_Method == 'SMLS':
-        Max_YT_Ratio = 0.89
+    if fabrication_method == 'HFW':
+        max_yt_ratio = 0.95
+    elif fabrication_method == 'SMLS':
+        max_yt_ratio = 0.89
     else:
-        Max_YT_Ratio = 0.90
-else:
-    Max_YT_Ratio = sheet['F38'].value
-
-if Vessel == '7Oceans':
-    Reel_Diameter = 18000 #Unit mm
-elif Vessel == '7Navica':
-    Reel_Diameter = 15000 #Unit mm
-else: 
-    print ('Erro, no installation vessel is found')
-
-Resistance_Strain_Factor = 2.0   #Low for installation, Table 7-5 of OS-F101
-
-Load_Effect_Factor = 1.2 # Table 4-4 of OS-F101
-
-if sheet['B37'].value == None:
-    Ext_Coating_Thickness = 3  # Unit mm, Default is 3mm 3LPP
-else:
-    Ext_Coating_Thickness = sheet['B37'].value/1000
+        max_yt_ratio = 0.90
 
 
-#Calcuations for Min Required WT for Reeling
-
-if Fabrication_Method == 'SMLS':
-    Condition_Effect_Factor = 0.77
-elif Fabrication_Method == 'HFW':
-    Condition_Effect_Factor = (0.59+(Max_YT_Ratio-0.9)/0.3)
-else:
-    Condition_Effect_Factor = 0.82
-
-Max_Nominal_Reeling_Strain = (Steel_Pipe_Diameter/2)/((Reel_Diameter+Steel_Pipe_Diameter)/2 + Ext_Coating_Thickness)
-
-Design_Comp_Strain = Max_Nominal_Reeling_Strain*Load_Effect_Factor*Condition_Effect_Factor
-
-from scipy.optimize import fsolve
-
-x0 = Steel_Pipe_Diameter/20
-
-def f_reeling(t): 
-    if Steel_Pipe_Diameter/t <= 20:
-        Girth_Weld_Factor = 1.0
-    elif Steel_Pipe_Diameter/t <= 45 and Steel_Pipe_Diameter/t > 20:
-        Girth_Weld_Factor = 1 - (Steel_Pipe_Diameter/t - 20)/100
-    else:
-        print('Girth Weld Factor is not defined due to the D/t is larger then 45')
-    return Design_Comp_Strain - (0.78*(t/Steel_Pipe_Diameter-0.01)*Max_YT_Ratio**(-1.5)*Girth_Weld_Factor)/Resistance_Strain_Factor
-
-
-Min_WT_Reeling = round(float(fsolve(f_reeling,x0)),3)
-
-if sheet['F39'].value == None:
-    Clad_Layer_Thickness = 3
-else:
-    Clad_Layer_Thickness = sheet['F39'].value
-
-
-
-if Any_Inner_Metal_Layer == 'Yes':
-    if Cladded_Or_Lined == 'Cladded':
-        Min_WT_Reeling_No_Clad  = Min_WT_Reeling - Clad_Layer_Thickness
+    if vessel == '7Oceans':
+        reel_diameter = 18000 #Unit mm
+    elif vessel == '7Navica':
+        reel_diameter = 15000 #Unit mm
     else: 
-        Min_WT_Reeling_No_Clad = Min_WT_Reeling
-else:
-    Min_WT_Reeling_No_Clad = Min_WT_Reeling
+        return('Erro, no installation vessel is found')
+
+    #Calcuations for Min Required WT for Reeling
+
+    if fabrication_method == 'SMLS':
+        condition_effect_factor = 0.77
+    elif fabrication_method == 'HFW':
+        condition_effect_factor = (0.59+(max_yt_ratio-0.9)/0.3)
+    else:
+        condition_effect_factor = 0.82
+
+    max_nominal_reeling_strain = (steel_diameter/2)/((reel_diameter+steel_diameter)/2 + ext_coating_thickness)
+
+    design_comp_strain= max_nominal_reeling_strain*load_effect_factor*condition_effect_factor
+
+    from scipy.optimize import fsolve
+
+    x0 = steel_diameter/20
+
+    def f_reeling(t): 
+        if steel_diameter/t <= 20:
+            girth_weld_factor = 1.0
+        elif steel_diameter/t <= 45 and steel_diameter/t > 20:
+            girth_weld_factor = 1 - (steel_diameter/t - 20)/100
+        return(design_comp_strain- (0.78*(t/steel_diameter-0.01)*max_yt_ratio**(-1.5)*girth_weld_factor)/resistance_strain_factor)
 
 
+    min_wt_reeling = round(float(fsolve(f_reeling,x0)),3)
 
 
+    if min_wt_reeling < steel_diameter/45:
+        return 'Girth Weld Factor is not defined due to the D/t is larger then 45'
 
+    if any_inner_metal_layer == 'yes':
+        if cladded_or_lined == 'Cladded':
+            min_wt_reeling_no_clad  = min_wt_reeling - clad_layer_thickness
+        else: 
+            min_wt_reeling_no_clad = min_wt_reeling
+    else:
+        min_wt_reeling_no_clad = min_wt_reeling
+
+    return(min_wt_reeling_no_clad)
+
+
+print(cal_reeling(steel_diameter=273.1,
+                  fabrication_method='HFW',
+                  vessel='7Oceans',
+                  any_inner_metal_layer='no',
+                  cladded_or_lined='Cladded',
+                  clad_layer_thickness=3.0,
+                  resistance_strain_factor=2.0, #Low for installation, Table 7-5 of OS-F101
+                  material_factor=1.15,
+                  load_effect_factor=1.2, # Table 4-4 of OS-F101
+                  ext_coating_thickness=0))
