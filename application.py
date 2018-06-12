@@ -20,7 +20,12 @@ def utility_processor():
     return dict(convert_name=convert_name)
 
 
-@application.route('/', methods=['GET', 'POST'])
+@application.route('/', methods=['GET'])
+def home():
+    return render_template("home.html")
+
+
+@application.route('/wtcal', methods=['GET', 'POST'])
 def index():
     geo = GeometryInput(request.form)
     geo_fields = zip_form(geo)

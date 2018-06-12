@@ -3,7 +3,7 @@ $(document).ready(function(){
 
         $.ajax({
             type : "POST",
-            url : '/',
+            url : '/wtcal',
             data: $('form').serialize(),
             success: function (data) {
                 var obj = $("#result").text(data.result);
