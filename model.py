@@ -1,4 +1,11 @@
-from wtforms import Form, FloatField, SelectField, BooleanField, validators
+from wtforms import Form, FloatField, SelectField, \
+                    BooleanField, SubmitField, validators
+
+
+class ImportFrom(Form):
+    import_from = SelectField(choices=[('module1', 'module1'),
+                                       ('module2', 'module2')])
+    submit_import = SubmitField('Import')
 
 
 class GeometryInput(Form):

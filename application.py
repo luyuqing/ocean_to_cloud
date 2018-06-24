@@ -4,7 +4,7 @@ from math import ceil
 from prepare import zip_form
 from model import GeometryInput, MaterialInput, \
                   LoadInput, SafetyClass, Other, \
-                  CalWith
+                  CalWith, ImportFrom
 from compute import cal_pressure_containment, cal_collaps, \
                     cal_prop_buckling, cal_reeling
 
@@ -27,6 +27,9 @@ def home():
 
 @application.route('/wtcal', methods=['GET', 'POST'])
 def index():
+    import_from = list(ImportFrom(request.form))[0]
+    import_submit = list(ImportFrom(request.form))[1]
+
     geo = GeometryInput(request.form)
     geo_fields = zip_form(geo)
 
@@ -171,6 +174,8 @@ def index():
             return jsonify({"result": "Please Fill In Blanks With Valid Values."})
 
     return render_template("view.html",
+                           import_from=import_from,
+                           import_submit=import_submit,
                            geo_fields=geo_fields,
                            material_fields=material_fields,
                            load_fields=load_fields,

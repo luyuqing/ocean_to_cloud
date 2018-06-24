@@ -39,6 +39,9 @@ h4              { margin-top: 1.5em;}
 .result         { margin-left: 6px;
                   line-height: 1.5; }
 
+.import         { margin-top: 30px;
+                  margin-left: 5px; }
+
 ul {
     width: 100%;
     list-style-type: none;
