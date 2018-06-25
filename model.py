@@ -1,9 +1,17 @@
-from wtforms import Form, FloatField, SelectField, BooleanField, validators
+from wtforms import Form, FloatField, SelectField, \
+    BooleanField, SubmitField, validators
+
+
+class ImportFrom(Form):
+    import_from = SelectField(choices=[('', ''),
+                                       ('module1', 'module1'),
+                                       ('module2', 'module2')])
+    submit_import = SubmitField('Import')
 
 
 class GeometryInput(Form):
     steel_diameter = FloatField(label='mm',
-                                     validators=[validators.InputRequired()])
+                                validators=[validators.InputRequired()])
     corrosion_allowance = FloatField(label='(mm)',
                                      validators=[validators.InputRequired()])
 
@@ -37,7 +45,7 @@ class LoadInput(Form):
     level = FloatField(label='(m)',
                        validators=[validators.InputRequired()])
     max_contents_density = FloatField(label='(kg/m3)',
-                                                   validators=[validators.InputRequired()])
+                                      validators=[validators.InputRequired()])
     water_depth_for_bursting = FloatField(label='(m)',
                                           validators=[validators.InputRequired()])
     water_depth_for_collapse_and_prop_buckling = FloatField(label='(m)',
@@ -69,5 +77,3 @@ class CalWith(Form):
     reeling_screening_check = BooleanField(label='')
     vessel = SelectField(label='', choices=[('7Oceans', '7Oceans'),
                                             ('7Navica', '7Navica')])
-
-
