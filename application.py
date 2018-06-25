@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify
 from math import ceil
+from werkzeug.datastructures import MultiDict
 
 from prepare import zip_form
 from model import GeometryInput, MaterialInput, \
@@ -27,8 +28,14 @@ def home():
 
 @application.route('/wtcal', methods=['GET', 'POST'])
 def index():
+
     import_from = list(ImportFrom(request.form))[0]
     import_submit = list(ImportFrom(request.form))[1]
+
+    # m = MultiDict([('steel_diameter', 5.0),
+    #                ('corrosion_allowance', 5.0)])
+    # geo = GeometryInput(m)
+    # geo_fields = zip_form(geo)
 
     geo = GeometryInput(request.form)
     geo_fields = zip_form(geo)
@@ -170,6 +177,10 @@ def index():
                 result = result + v[0] + ': ...' + '{:.2f}'.format(v[1]) + '\n'
             # print(result)
             return jsonify({"result": result})
+        # else:
+        #     m = MultiDict([('steel_diameter', 5.0),
+        #                    ('corrosion_allowance', 5.0)])
+        #     geo = GeometryInput(m)
         else:
             return jsonify({"result": "Please Fill In Blanks With Valid Values."})
 

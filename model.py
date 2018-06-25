@@ -3,7 +3,8 @@ from wtforms import Form, FloatField, SelectField, \
 
 
 class ImportFrom(Form):
-    import_from = SelectField(choices=[('module1', 'module1'),
+    import_from = SelectField(choices=[('', ''),
+                                       ('module1', 'module1'),
                                        ('module2', 'module2')])
     submit_import = SubmitField('Import')
 
