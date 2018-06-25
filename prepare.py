@@ -1,3 +1,6 @@
+from math import ceil
+
+
 def zip_form(form):
     list_1 = []
     list_2 = []
@@ -15,3 +18,7 @@ def zip_form(form):
     final = list(zip(list_1, list_2))
     final.append((list_1[-1], ))
     return final
+
+
+def ceil_result(res):
+    return ceil(res * 100) / 100
