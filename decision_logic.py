@@ -1,4 +1,3 @@
-from flask import render_template, request, jsonify
 from werkzeug.datastructures import MultiDict
 
 from prepare import ceil_result
@@ -9,8 +8,8 @@ from compute import cal_pressure_containment, cal_collaps, \
     cal_prop_buckling, cal_reeling
 
 
-def home_page():
-    return render_template("home.html")
+def home_page(flask):
+    return flask.render_template("home.html")
 
 
 def wtcal_import():
@@ -18,7 +17,7 @@ def wtcal_import():
     #                 ('corrosion_allowance', 5.0)])
     # geo = GeometryInput(m)
     # geo_fields = zip_form(geo)
-    geo = GeometryInput(request.form)
+    geo = GeometryInput(flask.request.form)
     geo_fields = zip_form(geo)
 
     import_ = ImportFrom()
@@ -33,25 +32,25 @@ def wtcal_import():
                            geo_fields=geo_fields)
 
 
-def wtcal_compute():
-    geo = GeometryInput(request.form)
+def wtcal_compute(flask):
+    geo = GeometryInput(flask.request.form)
     geo_fields = zip_form(geo)
 
-    material = MaterialInput(request.form)
+    material = MaterialInput(flask.request.form)
     material_fields = zip_form(material)
 
-    load = LoadInput(request.form)
+    load = LoadInput(flask.request.form)
     load_fields = zip_form(load)
 
-    safety = SafetyClass(request.form)
+    safety = SafetyClass(flask.request.form)
     safety_fields = zip_form(safety)
 
-    other = Other(request.form)
+    other = Other(flask.request.form)
     other_fields = zip_form(other)
 
-    cal_with_fields = CalWith(request.form)
+    cal_with_fields = CalWith(flask.request.form)
 
-    if request.method == 'POST':
+    if flask.request.method == 'POST':
         if geo.validate() and material.validate() and \
            load.validate() and safety.validate():
             steel_diameter = geo.steel_diameter.data
@@ -173,11 +172,11 @@ def wtcal_compute():
             for v in zip_results:
                 result = result + v[0] + ': ...' + '{:.2f}'.format(v[1]) + '\n'
             # print(result)
-            return jsonify({"result": result})
+            return flask.jsonify({"result": result})
         else:
-            return jsonify({"result": "Please Fill In Blanks With Valid Values."})
+            return flask.jsonify({"result": "Please Fill In Blanks With Valid Values."})
 
-    return render_template("wtcal.html",
+    return flask.render_template("wtcal.html",
                            geo_fields=geo_fields,
                            material_fields=material_fields,
                            load_fields=load_fields,

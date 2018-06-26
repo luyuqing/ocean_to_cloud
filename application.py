@@ -1,9 +1,9 @@
-from flask import Flask
+import flask
 
 from decision_logic import home_page, wtcal_compute, wtcal_import
 
 
-application = Flask(__name__)
+application = flask.Flask(__name__)
 
 
 @application.context_processor
@@ -16,12 +16,12 @@ def utility_processor():
 
 @application.route('/', methods=['GET'])
 def home():
-    return home_page()
+    return home_page(flask)
 
 
 @application.route('/wtcal', methods=['GET', 'POST'])
 def wtcal():
-    return wtcal_import()
+    return wtcal_compute(flask)
 
 if __name__ == '__main__':
     application.run(debug=True)
