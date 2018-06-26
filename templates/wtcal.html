@@ -16,7 +16,7 @@
         </ul>
         <div class="jumbotron mainbody">
         <h1>Wall Thickness Calculation</h1>
-        <form method=post action="" class=import>
+        <form id="importForm" method="post" action="" class="import">
             <table>
                 <tr>
                     <td>Find Saved Modules Here: </td>
@@ -25,9 +25,9 @@
                 </tr>
             </table>
         </form>
-        <form method=post action="">
+        <form id="mainForm" method="post" action="">
             <h2>Geometry Input</h2>
-            <div class=form>
+            <div class="form">
             <table>
                 {% for tuple_f in geo_fields %}
                 {% if tuple_f | length == 2 %}
@@ -35,7 +35,7 @@
                         <td>{{ convert_name(tuple_f[0].name) }}</td>
                         <td>{{ tuple_f[0] }}</td>
                         <td>{{ tuple_f[0].label }}</td>
-                        <td class=geo_space>{{ convert_name(tuple_f[1].name) }}</td>
+                        <td class="geoSpace">{{ convert_name(tuple_f[1].name) }}</td>
                         <td>{{ tuple_f[1] }}</td>
                         <td>{{ tuple_f[1].label }}</td>
                     </tr>
@@ -50,7 +50,7 @@
             </table>
             </div>
             <h2>Material Input</h2>
-            <div class=form>
+            <div class="form">
             <table>
                 {% for tuple_f in material_fields %}
                     {% if tuple_f | length == 2 %}
@@ -58,7 +58,7 @@
                             <td>{{ convert_name(tuple_f[0].name) }}</td>
                             <td>{{ tuple_f[0] }}</td>
                             <td>{{ tuple_f[0].label }}</td>
-                            <td class=material_space>{{ convert_name(tuple_f[1].name) }}</td>
+                            <td class="materialSpace">{{ convert_name(tuple_f[1].name) }}</td>
                             <td>{{ tuple_f[1] }}</td>
                             <td>{{ tuple_f[1].label }}</td>
                         </tr>
@@ -73,7 +73,7 @@
             </table>
             </div>
             <h2>Load Input</h2>
-            <div class=form>
+            <div class="form">
             <table>
                     {% for tuple_f in load_fields %}
                         {% if tuple_f | length == 2 %}
@@ -81,7 +81,7 @@
                                 <td>{{ convert_name(tuple_f[0].name) }}</td>
                                 <td>{{ tuple_f[0] }}</td>
                                 <td>{{ tuple_f[0].label }}</td>
-                                <td class=load_space>{{ convert_name(tuple_f[1].name) }}</td>
+                                <td class="loadSpace">{{ convert_name(tuple_f[1].name) }}</td>
                                 <td>{{ tuple_f[1] }}</td>
                                 <td>{{ tuple_f[1].label }}</td>
                             </tr>
@@ -96,7 +96,7 @@
                 </table>
                 </div>  
                 <h2>Safety Class</h2>
-                <div class=form>
+                <div class="form">
                 <table>
                     {% for tuple_f in safety_fields %}
                         {% if tuple_f | length == 2 %}
@@ -104,7 +104,7 @@
                                 <td>{{ convert_name(tuple_f[0].name) }}</td>
                                 <td>{{ tuple_f[0] }}</td>
                                 <td>{{ tuple_f[0].label }}</td>
-                                <td class=safety_space>{{ convert_name(tuple_f[1].name) }}</td>
+                                <td class="safetySpace">{{ convert_name(tuple_f[1].name) }}</td>
                                 <td>{{ tuple_f[1] }}</td>
                                 <td>{{ tuple_f[1].label }}</td>
                             </tr>
@@ -119,7 +119,7 @@
                 </table>
                 </div>
                 <h2>Other Input</h2>
-                <div class=form>
+                <div class="form">
                 <table>
                     {% for tuple_f in other_fields %}
                         {% if tuple_f | length == 2 %}
@@ -127,7 +127,7 @@
                                 <td>{{ convert_name(tuple_f[0].name) }}</td>
                                 <td>{{ tuple_f[0] }}</td>
                                 <td>{{ tuple_f[0].label }}</td>
-                                <td class=other_space>{{ convert_name(tuple_f[1].name) }}</td>
+                                <td class="otherSpace">{{ convert_name(tuple_f[1].name) }}</td>
                                 <td>{{ tuple_f[1] }}</td>
                                 <td>{{ tuple_f[1].label }}</td>
                             </tr>
@@ -142,7 +142,7 @@
                 </table>
                 </div>
                 <h2>Calculate With Following</h2>
-                <div class=form>
+                <div class="form">
                 <table>
                     {% for field in cal_with_fields %}
                         <tr>
@@ -153,9 +153,9 @@
                     {% endfor %}
                 </table>
                 </div>
-            <p><input type=submit value=Compute class="btn btn-primary"></p>
+            <p><input type="submit" value="Compute" class="btn btn-primary"></p>
         </form>
-        <h4 class=result id=result></h4>
+        <h4 id="result" class="result"></h4>
         </div>
     </body>
 </html>

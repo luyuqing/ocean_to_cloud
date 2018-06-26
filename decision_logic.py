@@ -1,16 +1,36 @@
 from flask import render_template, request, jsonify
+from werkzeug.datastructures import MultiDict
 
 from prepare import ceil_result
 from prepare import zip_form
-from model import GeometryInput, MaterialInput, \
-                  LoadInput, SafetyClass, Other, \
-                  CalWith
+from model import GeometryInput, MaterialInput, LoadInput, \
+    SafetyClass, Other, CalWith, ImportFrom
 from compute import cal_pressure_containment, cal_collaps, \
-                    cal_prop_buckling, cal_reeling
+    cal_prop_buckling, cal_reeling
 
 
 def home_page():
     return render_template("home.html")
+
+
+def wtcal_import():
+    # m = MultiDict([('steel_diameter', 5.0),
+    #                 ('corrosion_allowance', 5.0)])
+    # geo = GeometryInput(m)
+    # geo_fields = zip_form(geo)
+    geo = GeometryInput(request.form)
+    geo_fields = zip_form(geo)
+
+    import_ = ImportFrom()
+    import_from = list(import_)[0]
+
+    if request.method == 'POST':
+        res = {"steel_diameter": 5, "corrosion_allowance": 5}
+        return jsonify(res)
+    return render_template("wtcal.html",
+                           import_from=import_from,
+                           import_submit=import_submit,
+                           geo_fields=geo_fields)
 
 
 def wtcal_compute():
@@ -68,7 +88,7 @@ def wtcal_compute():
 
             res = dict()
             p1, p2, p3, p4 = 0, 0, 0, 0
-            
+
             if pressure_containment is True:
                 p1 = cal_pressure_containment(steel_diameter,
                                               corrosion_allowance,
@@ -138,7 +158,7 @@ def wtcal_compute():
                               'p2': 'Min Requirement For Collaps',
                               'p3': 'Min Requirement For Propgation Buckling',
                               'p4': 'Min Requirement For Reeling Screening Check'}
-            string_to_p = {v: k for k, v in str_candidates.items()} 
+            string_to_p = {v: k for k, v in str_candidates.items()}
             # From string components if value is not ''
             final_strings = [str_candidates[p] for p in res if res[p]]
             # print(final_strings, string_to_p)
@@ -157,7 +177,7 @@ def wtcal_compute():
         else:
             return jsonify({"result": "Please Fill In Blanks With Valid Values."})
 
-    return render_template("view.html",
+    return render_template("wtcal.html",
                            geo_fields=geo_fields,
                            material_fields=material_fields,
                            load_fields=load_fields,

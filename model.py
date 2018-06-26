@@ -63,8 +63,7 @@ class SafetyClass(Form):
 
 
 class Other(Form):
-    example_param_float = FloatField(label='(m)',
-                                     validators=[validators.InputRequired()])
+    example_param_float = FloatField(label='(m)')
     example_param_select = SelectField(label='', choices=[('Choice1', 'Choice1'),
                                                           ('Choice2', 'Choice2'),
                                                           ('Choice3', 'Choice3')])
