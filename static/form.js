@@ -3,9 +3,8 @@ $(document).ready(function(){
         $.ajax({
             type : "POST",
             url : '/wtcal',
-            data: $("#mainForm").serialize(),
+            data: $(this).serialize(),
             success: function (data) {
-                $("#test").text(data);
                 var obj = $("#result").text(data.result);
                 obj.html(obj.html().replace(/\n/g, '<br/>'));
                 obj.html(obj.html().replace('...', '&nbsp&nbsp'));

@@ -1,7 +1,6 @@
 from werkzeug.datastructures import MultiDict
 
-from prepare import ceil_result
-from prepare import zip_form
+from prepare import zip_form, wtcal_output
 from model import GeometryInput, MaterialInput, LoadInput, \
     SafetyClass, Other, CalWith, ImportFrom
 from compute import cal_pressure_containment, cal_collaps, \
@@ -75,7 +74,7 @@ def wtcal_compute(flask):
             contents_type = safety.contents_type.data
             operation_zone = safety.operation_zone.data
 
-            # Example
+            # Example Other
             example_param_float = other.example_param_float.data
             example_param_select = other.example_param_select.data
 
@@ -85,11 +84,10 @@ def wtcal_compute(flask):
             reeling_screening_check = cal_with_fields.reeling_screening_check.data
             vessel = cal_with_fields.vessel.data
 
-            res = dict()
-            p1, p2, p3, p4 = 0, 0, 0, 0
+            r1, r2, r3, r4 = 0, 0, 0, 0
 
             if pressure_containment is True:
-                p1 = cal_pressure_containment(steel_diameter,
+                r1 = cal_pressure_containment(steel_diameter,
                                               corrosion_allowance,
                                               fabrication_method,
                                               pipe_material,
@@ -104,7 +102,7 @@ def wtcal_compute(flask):
                                               contents_type,
                                               operation_zone)
             if collaps is True:
-                p2 = cal_collaps(steel_diameter,
+                r2 = cal_collaps(steel_diameter,
                                  corrosion_allowance,
                                  fabrication_method,
                                  pipe_material,
@@ -116,7 +114,7 @@ def wtcal_compute(flask):
                                  contents_type,
                                  operation_zone)
             if propgation_buckling is True:
-                p3 = cal_prop_buckling(steel_diameter,
+                r3 = cal_prop_buckling(steel_diameter,
                                        corrosion_allowance,
                                        fabrication_method,
                                        pipe_material,
@@ -128,58 +126,21 @@ def wtcal_compute(flask):
                                        contents_type,
                                        operation_zone)
             if reeling_screening_check is True:
-                p4 = cal_reeling(steel_diameter,
+                r4 = cal_reeling(steel_diameter,
                                  fabrication_method,
                                  vessel,
                                  any_inner_metal_layer,
                                  cladded_or_lined)
-            # print(p1, p2, p3, p4)
-            res['p0'] = ''
-            res['p1'] = p1 if p1 else ''
-            res['p2'] = p2 if p2 else ''
-            res['p3'] = p3 if p3 else ''
-            res['p4'] = p4 if p4 else ''
 
-            # to cal max wt, all p1-p4 must be float not string
-            wt_cal = True
-            for k, v in res.items():
-                if not isinstance(v, float) and v != '':
-                    wt_cal = False
-                    break
-            if wt_cal is True:
-                max_ = max(p1, p2, p3, p4)
-                res['p0'] = ceil_result(max_)
-
-            # print(res)
-
-            str_candidates = {'p0': 'Min Requirement For Wall Thickness',
-                              'p1': 'Min Requirement For Pressure Containment',
-                              'p2': 'Min Requirement For Collaps',
-                              'p3': 'Min Requirement For Propgation Buckling',
-                              'p4': 'Min Requirement For Reeling Screening Check'}
-            string_to_p = {v: k for k, v in str_candidates.items()}
-            # From string components if value is not ''
-            final_strings = [str_candidates[p] for p in res if res[p]]
-            # print(final_strings, string_to_p)
-            valid_string = []
-            p_values = list()
-            for s in final_strings:
-                valid_string.append(s)
-                p_values.append(res[string_to_p[s]])
-            zip_results = list(zip(valid_string, p_values))
-            # print(zip_results)
-            result = ''
-            for v in zip_results:
-                result = result + v[0] + ': ...' + '{:.2f}'.format(v[1]) + '\n'
-            # print(result)
+            result = wtcal_output(r1=r1, r2=r2, r3=r3, r4=r4)
             return flask.jsonify({"result": result})
         else:
             return flask.jsonify({"result": "Please Fill In Blanks With Valid Values."})
 
     return flask.render_template("wtcal.html",
-                           geo_fields=geo_fields,
-                           material_fields=material_fields,
-                           load_fields=load_fields,
-                           safety_fields=safety_fields,
-                           other_fields=other_fields,
-                           cal_with_fields=cal_with_fields)
+                                 geo_fields=geo_fields,
+                                 material_fields=material_fields,
+                                 load_fields=load_fields,
+                                 safety_fields=safety_fields,
+                                 other_fields=other_fields,
+                                 cal_with_fields=cal_with_fields)

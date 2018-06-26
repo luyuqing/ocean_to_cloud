@@ -1,4 +1,5 @@
 from math import ceil
+from collections import OrderedDict
 
 
 def zip_form(form):
@@ -20,5 +21,18 @@ def zip_form(form):
     return final
 
 
-def ceil_result(res):
-    return ceil(res * 100) / 100
+def wtcal_output(r1, r2, r3, r4):
+    r_max = max(r1, r2, r3, r4)
+    r_max = ceil(r_max * 100) / 100
+    results = OrderedDict()
+    results['Min Requirement For Wall Thickness'] = r_max
+    results['Min Requirement For Pressure Containment'] = r1
+    results['Min Requirement For Collaps'] = r2
+    results['Min Requirement For Propgation Buckling'] = r3
+    results['Min Requirement For Reeling Screening Check'] = r4
+    # only keeps non-zero value, ie. cal_with checked True
+    output = ''
+    for k, v in list(results.items()):
+        if v:
+            output += k + ': ...' + '{:.2f}'.format(v) + '\n'
+    return output
