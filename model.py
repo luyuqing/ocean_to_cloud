@@ -10,8 +10,8 @@ class ImportFrom(Form):
 
 
 class GeometryInput(Form):
-    steel_diameter = FloatField(label='mm',
-                                validators=[validators.InputRequired()])
+    steel_outer_diameter = FloatField(label='mm',
+                                      validators=[validators.InputRequired()])
     corrosion_allowance = FloatField(label='(mm)',
                                      validators=[validators.InputRequired()])
 
@@ -31,6 +31,9 @@ class MaterialInput(Form):
                                                                ('no', 'NO')])
     supplimentary_u_fulfilled = SelectField(label='', choices=[('yes', 'YES'),
                                                                ('no', 'NO')])
+
+
+class MetalLayer(Form):
     any_inner_metal_layer = SelectField(label='', choices=[('yes', 'YES'),
                                                            ('no', 'NO')])
     cladded_or_lined = SelectField(label='', choices=[('Cladded', 'Cladded'),

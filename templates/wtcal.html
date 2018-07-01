@@ -72,6 +72,29 @@
                 {% endfor %}
             </table>
             </div>
+            <h2>Metal Layer Input</h2>
+            <div class="form">
+            <table>
+                {% for tuple_f in metal_fields %}
+                    {% if tuple_f | length == 2 %}
+                        <tr>
+                            <td>{{ convert_name(tuple_f[0].name) }}</td>
+                            <td>{{ tuple_f[0] }}</td>
+                            <td>{{ tuple_f[0].label }}</td>
+                            <td class="metalSpace">{{ convert_name(tuple_f[1].name) }}</td>
+                            <td>{{ tuple_f[1] }}</td>
+                            <td>{{ tuple_f[1].label }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>{{ convert_name(tuple_f[0].name) }}</td>
+                            <td>{{ tuple_f[0] }}</td>
+                            <td>{{ tuple_f[0].label }}</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+            </div>
             <h2>Load Input</h2>
             <div class="form">
             <table>
