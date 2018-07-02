@@ -1,6 +1,6 @@
 import flask
 
-from decision_logic import home_page, wtcal_compute, wtcal_import
+from decision_logic import home_page, wtcal_compute
 
 
 application = flask.Flask(__name__)

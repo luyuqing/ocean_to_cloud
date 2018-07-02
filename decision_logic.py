@@ -11,27 +11,9 @@ def home_page(flask):
     return flask.render_template("home.html")
 
 
-def wtcal_import():
-    # m = MultiDict([('steel_outer_diameter', 5.0),
-    #                 ('corrosion_allowance', 5.0)])
-    # geo = GeometryInput(m)
-    # geo_fields = zip_form(geo)
-    geo = GeometryInput(flask.request.form)
-    geo_fields = zip_form(geo)
-
-    import_ = ImportFrom()
-    import_from = list(import_)[0]
-
-    if request.method == 'POST':
-        res = {"steel_diameter": 5, "corrosion_allowance": 5}
-        return jsonify(res)
-    return render_template("wtcal.html",
-                           import_from=import_from,
-                           import_submit=import_submit,
-                           geo_fields=geo_fields)
-
-
 def wtcal_compute(flask):
+    import_from = ImportFrom()
+
     geo = GeometryInput(flask.request.form)
     geo_fields = zip_form(geo)
 
@@ -142,6 +124,7 @@ def wtcal_compute(flask):
             return flask.jsonify({"result": "Please Fill In Blanks With Valid Values."})
 
     return flask.render_template("wtcal.html",
+                                 import_from=import_from,
                                  geo_fields=geo_fields,
                                  material_fields=material_fields,
                                  metal_fields=metal_fields,
