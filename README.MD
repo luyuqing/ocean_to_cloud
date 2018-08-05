@@ -1,1 +1,2 @@
-Let´s do subsea pipeline design and calculation on the cloud :-)
+A web application for subsea pipeline design, and the updated repo has been moved to Bitbucket...
+
